@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autenticacion
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      role: autenticacion
+  template:
+    metadata:
+      labels:
+        role: autenticacion
+    spec:
+      containers:
+      - name: autenticacion
+        image: dpuquimia/crm_api:v1.0
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autenticacion
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 31111
+  selector:
+    role: autenticacion
+  type: LoadBalancer
